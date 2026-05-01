@@ -61,6 +61,7 @@ export async function runSimulation(scenario: SimulationScenario): Promise<{
   flagged: number;
   autoBlocked: string[];
   durationMs: number;
+  records: RequestRecord[];
 }> {
   const config = SCENARIOS[scenario];
   const startTime = Date.now();
@@ -69,6 +70,7 @@ export async function runSimulation(scenario: SimulationScenario): Promise<{
   let blocked = 0;
   let flagged = 0;
   const autoBlocked = new Set<string>();
+  const records: RequestRecord[] = [];
 
   for (let i = 0; i < config.totalRequests; i += 1) {
     const ip = config.ips[i % config.ips.length];
@@ -103,6 +105,8 @@ export async function runSimulation(scenario: SimulationScenario): Promise<{
     };
 
     await requestLogger.log(record);
+    records.unshift(record);
+    if (records.length > 150) records.length = 150;
 
     const { abuseFlags, shouldAutoBlock } = await analyseRequest(record);
     if (abuseFlags.length > 0) {
@@ -121,7 +125,8 @@ export async function runSimulation(scenario: SimulationScenario): Promise<{
     blocked,
     flagged,
     autoBlocked: [...autoBlocked],
-    durationMs: Date.now() - startTime
+    durationMs: Date.now() - startTime,
+    records
   };
 }
 

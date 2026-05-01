@@ -3,6 +3,7 @@ import type { RequestRecord } from '../../../../server/src/types';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 const MAX_DISPLAY = 150;
+const FEED_SEED_KEY = 'shieldlayer_feed_seed';
 
 function recordKey(record: RequestRecord): string {
   return `${record.id}:${record.timestamp}`;
@@ -30,6 +31,17 @@ export function useLiveFeed() {
     pendingRef.current = [];
     setPendingCount(0);
     setEntries((prev) => mergeRecords(prev, pending));
+  }
+
+  function loadSeededRecords(): RequestRecord[] {
+    try {
+      const raw = localStorage.getItem(FEED_SEED_KEY);
+      const parsed = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(parsed)) return [];
+      return parsed as RequestRecord[];
+    } catch {
+      return [];
+    }
   }
 
   useEffect(() => {
@@ -65,6 +77,22 @@ export function useLiveFeed() {
     });
 
     return () => es.close();
+  }, []);
+
+  useEffect(() => {
+    const seeded = loadSeededRecords();
+    if (seeded.length > 0) {
+      setEntries((prev) => mergeRecords(prev, seeded));
+    }
+
+    function onSeededFeed() {
+      const records = loadSeededRecords();
+      if (records.length === 0 || pausedRef.current) return;
+      setEntries((prev) => mergeRecords(prev, records));
+    }
+
+    window.addEventListener('shieldlayer-feed-seed', onSeededFeed);
+    return () => window.removeEventListener('shieldlayer-feed-seed', onSeededFeed);
   }, []);
 
   useEffect(() => {

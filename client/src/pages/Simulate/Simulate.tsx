@@ -53,6 +53,18 @@ export default function Simulate() {
         method: 'POST',
         body: { scenario: selected }
       });
+
+      if (Array.isArray((data as any)?.records)) {
+        try {
+          const existing = JSON.parse(localStorage.getItem('shieldlayer_feed_seed') || '[]');
+          const merged = [...(data as any).records, ...(Array.isArray(existing) ? existing : [])].slice(0, 150);
+          localStorage.setItem('shieldlayer_feed_seed', JSON.stringify(merged));
+          window.dispatchEvent(new CustomEvent('shieldlayer-feed-seed'));
+        } catch {
+          // ignore local cache write failures
+        }
+      }
+
       setResult(data);
     } catch (e: any) {
       setError(e.message || 'Simulation failed');
