@@ -1,0 +1,8 @@
+.badge {
+  display: inline-flex;
+  border: 1px solid var(--border-2);
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  padding: 2px 8px;
+  font-family: var(--font-data);
+}

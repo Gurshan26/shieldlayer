@@ -1,0 +1,58 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--sp-4);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-2);
+}
+
+.label {
+  color: var(--ink-3);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.trend {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.up {
+  color: var(--allowed);
+}
+
+.down {
+  color: var(--blocked);
+}
+
+.neutral {
+  border-top: 3px solid var(--neutral);
+}
+
+.allowed {
+  border-top: 3px solid var(--allowed);
+}
+
+.throttled {
+  border-top: 3px solid var(--throttled);
+}
+
+.blocked {
+  border-top: 3px solid var(--blocked);
+}
+
+.flagged {
+  border-top: 3px solid var(--flagged);
+}

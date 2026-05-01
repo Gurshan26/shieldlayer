@@ -1,0 +1,8 @@
+node_modules
+.env
+*.log
+coverage
+server/dist
+client/dist
+docs/assets/*.webm
+docs/assets/*.mp4

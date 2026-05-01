@@ -1,0 +1,9 @@
+.page {
+  padding: var(--sp-4);
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.sub {
+  color: var(--ink-3);
+}

@@ -1,0 +1,34 @@
+.btn {
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  padding: 8px 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.primary:hover {
+  background: var(--accent-dark);
+}
+
+.warning {
+  background: var(--throttled-bg);
+  border-color: #fcd34d;
+  color: var(--throttled);
+}
+
+.danger {
+  background: var(--blocked-bg);
+  border-color: #fecaca;
+  color: var(--blocked);
+}
+
+.ghost {
+  background: var(--surface);
+  border-color: var(--border-2);
+  color: var(--ink-2);
+}

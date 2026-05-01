@@ -1,0 +1,85 @@
+.page {
+  padding: var(--sp-4);
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.sub {
+  color: var(--ink-3);
+}
+
+.form {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.input {
+  border: 1px solid var(--border-2);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  padding: 8px 10px;
+  min-width: 180px;
+}
+
+.created {
+  background: var(--neutral-bg);
+  color: var(--ink);
+  border: 1px solid #bfdbfe;
+  border-radius: var(--r-sm);
+  padding: var(--sp-3);
+}
+
+.tableWrap {
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: auto;
+  background: var(--surface);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+ td {
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  padding: 10px;
+}
+
+th {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.tier {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.free {
+  background: var(--surface-2);
+  color: var(--ink-2);
+}
+
+.basic {
+  background: var(--neutral-bg);
+  color: var(--neutral);
+}
+
+.pro {
+  background: var(--allowed-bg);
+  color: var(--allowed);
+}
+
+.enterprise {
+  background: #f3e8ff;
+  color: #6d28d9;
+}
