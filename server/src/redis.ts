@@ -1,7 +1,8 @@
 import Redis from 'ioredis';
 
 let redisClient: Redis | null = null;
-let usingFallback = false;
+let usingFallback = true;
+let initPromise: Promise<void> | null = null;
 
 const memStore = new Map<string, { value: string; expiresAt?: number }>();
 
@@ -47,6 +48,9 @@ export function isUsingFallback(): boolean {
 }
 
 export async function initRedis(): Promise<void> {
+  if (initPromise) return initPromise;
+
+  initPromise = (async () => {
   const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
   let client: Redis | null = null;
 
@@ -73,6 +77,9 @@ export async function initRedis(): Promise<void> {
     client?.disconnect();
     redisClient = null;
   }
+  })();
+
+  return initPromise;
 }
 
 export const store = {

@@ -15,6 +15,16 @@ import { seedDemoKeys } from './services/quotaManager';
 
 const app = express();
 const PORT = Number(process.env.PORT || 3001);
+let bootstrapPromise: Promise<void> | null = null;
+
+function ensureBootstrap(): Promise<void> {
+  if (bootstrapPromise) return bootstrapPromise;
+  bootstrapPromise = (async () => {
+    await initRedis();
+    await seedDemoKeys();
+  })();
+  return bootstrapPromise;
+}
 
 const configuredOrigins = (process.env.CLIENT_URL || '')
   .split(',')
@@ -41,6 +51,14 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(async (_req, _res, next) => {
+  try {
+    await ensureBootstrap();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 app.use(rateLimiter());
 app.use(abuseDetector());
@@ -66,8 +84,7 @@ let started = false;
 
 export async function startServer(): Promise<void> {
   if (started) return;
-  await initRedis();
-  await seedDemoKeys();
+  await ensureBootstrap();
   app.listen(PORT, () => {
     console.log(`ShieldLayer running on :${PORT}`);
     if (isUsingFallback()) {
