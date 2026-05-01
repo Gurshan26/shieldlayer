@@ -8,7 +8,7 @@ import styles from './LiveFeed.module.css';
 export default function LiveFeed() {
   const [paused, setPaused] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
-  const { entries, connected, setPaused: setHookPaused } = useLiveFeed();
+  const { entries, connected, pendingCount, setPaused: setHookPaused } = useLiveFeed();
 
   function updatePaused(next: boolean) {
     setPaused(next);
@@ -24,16 +24,11 @@ export default function LiveFeed() {
           {connected ? <span className={styles.badge}>{entries.length} entries</span> : null}
         </div>
         <button className={`${styles.pauseBtn} ${paused ? styles.paused : ''}`} onClick={() => updatePaused(!paused)}>
-          {paused ? 'Resume' : 'Pause'}
+          {paused ? `Resume${pendingCount ? ` (${pendingCount} new)` : ''}` : 'Pause'}
         </button>
       </div>
 
-      <div
-        className={styles.feed}
-        ref={listRef}
-        onMouseEnter={() => updatePaused(true)}
-        onMouseLeave={() => updatePaused(false)}
-      >
+      <div className={styles.feed} ref={listRef}>
         {entries.length === 0 ? (
           <div className={styles.empty}>
             Waiting for requests. Run a simulation or hit a demo endpoint to see traffic.
